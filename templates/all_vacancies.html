@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Все вакансии</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0eae3;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .vacancies-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .vacancies-table th, .vacancies-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .vacancies-table th {
+            background-color: #f3f3f3;
+        }
+        .vacancies-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .vacancies-table a {
+            display: inline-block;
+            background-color: #d14a28;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        .vacancies-table a:hover {
+            background-color: #b53a22;
+        }
+        .home-button {
+            background-color: #4a8ad1;
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        .home-button:hover {
+            background-color: #3972b5;
+        }
+        .search-container {
+            position: relative;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .search-input, .search-button {
+            flex: 1 1 180px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        .search-button {
+            background-color: #d14a28;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        .search-button:hover {
+            background-color: #b53a22;
+        }
+    </style>
+</head>
+<body>
+    <form class="search-container" action="" method="get">
+        <a href="/" class="home-button">На главную</a>
+        <input class="search-input" type="text" name="city" placeholder="Город" value="{{ request.args.get('city', '') }}">
+        <input class="search-input" type="text" name="salary" list="salary-list" placeholder="Зарплата" value="{{ request.args.get('salary', '') }}">
+        <input class="search-input" type="text" name="experience" list="experience-list" placeholder="Опыт" value="{{ request.args.get('experience', '') }}">
+        <input class="search-input" type="text" name="schedule" list="schedule-list" placeholder="Режим работы" value="{{ request.args.get('schedule', '') }}">
+        <input class="search-input" type="text" name="skills" placeholder="Навыки" value="{{ request.args.get('skills', '') }}">
+        <datalist id="salary-list">
+            <option value="з/п не указана">
+        </datalist>
+        <datalist id="experience-list">
+            <option value="Нет опыта">
+            <option value="От 1 года до 3 лет">
+            <option value="От 3 до 6 лет">
+            <option value="Более 6 лет">
+        </datalist>
+        <datalist id="schedule-list">
+            <option value="Полный день">
+            <option value="Удаленная работа">
+            <option value="Гибкий график">
+        </datalist>
+        <button type="submit" class="search-button">Применить фильтр</button>
+    </form>
+    <div class="container">
+        <h1>Все вакансии</h1>
+        <h2>Всего вакансий: {{ total_vacancies }}</h2>
+        {% if vacancies %}
+            <table class="vacancies-table">
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Компания</th>
+                        <th>Город</th>
+                        <th>Опыт</th>
+                        <th>Зарплата</th>
+                        <th>Описание</th>
+                        <th>Дата публикации</th>
+                        <th>Ссылка</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for vacancy in vacancies %}
+                        <tr>
+                            <td>{{ vacancy[1] }}</td>
+                            <td>{{ vacancy[2] }}</td>
+                            <td>{{ vacancy[3] }}</td>
+                            <td>{{ vacancy[5] }}</td>
+                            <td>{{ vacancy[4] }}</td>
+                            <td>{{ vacancy[6] }}</td>
+                            <td>{{ vacancy[7] }}</td>
+                            <td><a href="{{ vacancy[8] }}">Подробнее</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Вакансии не найдены.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
